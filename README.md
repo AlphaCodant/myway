@@ -11,7 +11,7 @@ Le périmètre et les choix techniques suivent le cahier des charges du projet (
 | [`apps/api`](apps/api) | API unique pour toutes les interfaces | NestJS, PostgreSQL + PostGIS, Socket.IO | ✅ étape 1 |
 | [`apps/client`](apps/client) | Application client (Android, puis iOS) | Flutter | ✅ étape 1 |
 | [`apps/merchant`](apps/merchant) | Application commerçant (+ mode agent terrain) | Flutter | ✅ étape 2 |
-| `apps/courier` | Application livreur | Flutter | ⏳ étape 3 |
+| [`apps/courier`](apps/courier) | Application livreur | Flutter | ✅ étape 3 |
 | `apps/admin` | Console d'administration web | Next.js | ⏳ étape 4 |
 | [`packages/app_core`](packages/app_core) | Code partagé des apps Flutter (API, modèles, thème, connexion) | Dart | ✅ |
 
@@ -62,6 +62,7 @@ Les coordonnées GPS des quartiers et des repères sont **approximatives** : à 
 cd apps/api && npm test && npm run test:e2e   # la base livraison_test est créée par docker compose
 cd apps/client && flutter analyze && flutter test
 cd apps/merchant && flutter analyze && flutter test
+cd apps/courier && flutter analyze && flutter test
 ```
 
 Le test de bout en bout `apps/api/test/order-flow.e2e-spec.ts` déroule la boucle complète du MVP : commande, alerte temps réel au commerçant, affectation au livreur le plus proche, passage au suivant après 30 s, code de remise, encaissement, commissions, plafond d'espèces, Mobile Money, remplacement de produit, annulation, inscription assistée, tableaux de bord.
@@ -77,3 +78,9 @@ Le test de bout en bout `apps/api/test/order-flow.e2e-spec.ts` déroule la boucl
 | Nouvelle commande | Détail | Je livre moi-même | Remise par code | Catalogue | Mes ventes |
 |---|---|---|---|---|---|
 | ![](docs/captures/commercant-02-commandes.jpg) | ![](docs/captures/commercant-03-detail.jpg) | ![](docs/captures/commercant-05-je-livre.jpg) | ![](docs/captures/commercant-07-code.jpg) | ![](docs/captures/commercant-09-catalogue.jpg) | ![](docs/captures/commercant-10-ventes.jpg) |
+
+## Aperçu de l'application livreur
+
+| Proposition de course | Aller au commerce | En route | Remise par code | Course terminée | Gains |
+|---|---|---|---|---|---|
+| ![](docs/captures/livreur-04-proposition.jpg) | ![](docs/captures/livreur-06-prete.jpg) | ![](docs/captures/livreur-08-en-route.jpg) | ![](docs/captures/livreur-10-code.jpg) | ![](docs/captures/livreur-11-livree.jpg) | ![](docs/captures/livreur-12-gains.jpg) |

@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [packages/app_core, apps/client, apps/merchant]
+        app: [packages/app_core, apps/client, apps/merchant, apps/courier]
     defaults:
       run:
         working-directory: ${{ matrix.app }}
