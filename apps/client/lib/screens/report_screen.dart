@@ -1,9 +1,8 @@
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
 import '../l10n/fr.dart';
-import '../widgets/common.dart';
 
 const _subjects = ['Produit manquant ou abîmé', 'Retard de livraison', 'Problème de paiement', 'Comportement du livreur', 'Autre'];
 

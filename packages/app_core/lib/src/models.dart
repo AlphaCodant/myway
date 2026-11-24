@@ -107,6 +107,7 @@ class Address {
 
 class OrderItem {
   final String id;
+  final String productId;
   final String name;
   final int unitPrice;
   final int quantity;
@@ -115,6 +116,7 @@ class OrderItem {
   final int? substituteUnitPrice;
   OrderItem({
     required this.id,
+    this.productId = '',
     required this.name,
     required this.unitPrice,
     required this.quantity,
@@ -124,6 +126,7 @@ class OrderItem {
   });
   factory OrderItem.fromJson(Map<String, dynamic> j) => OrderItem(
         id: j['id'],
+        productId: j['productId'] ?? '',
         name: j['name'],
         unitPrice: j['unitPrice'],
         quantity: j['quantity'],
@@ -147,8 +150,13 @@ class Order {
   final int cancellationFee;
   final String? deliveryCode;
   final String? shopName;
+  final String? courierId;
   final String? courierName;
   final LatLngLite? courierLocation;
+  final String? note;
+  final String? deliveryLandmark;
+  final int? distanceMeters;
+  final int commission;
   final List<OrderItem> items;
   final List<String> timeline;
   final DateTime createdAt;
@@ -166,8 +174,13 @@ class Order {
     required this.cancellationFee,
     this.deliveryCode,
     this.shopName,
+    this.courierId,
     this.courierName,
     this.courierLocation,
+    this.note,
+    this.deliveryLandmark,
+    this.distanceMeters,
+    this.commission = 0,
     required this.items,
     required this.timeline,
     required this.createdAt,
@@ -186,7 +199,12 @@ class Order {
         cancellationFee: j['cancellationFee'] ?? 0,
         deliveryCode: j['deliveryCode'],
         shopName: j['shop']?['name'],
+        courierId: j['courierId'],
         courierName: j['courier']?['name'],
+        note: j['note'],
+        deliveryLandmark: j['deliveryLandmark'],
+        distanceMeters: j['distanceMeters'],
+        commission: j['commission'] ?? 0,
         courierLocation: LatLngLite.fromJson(j['courier']?['location']),
         items: ((j['items'] as List?) ?? []).map((i) => OrderItem.fromJson(i)).toList(),
         timeline: ((j['timeline'] as List?) ?? []).map((e) => e['type'] as String).toList(),

@@ -1,9 +1,7 @@
+import 'package:app_core/app_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
-import '../config.dart';
 
 class AuthState extends ChangeNotifier {
   AuthState(this.api, this.prefs) {

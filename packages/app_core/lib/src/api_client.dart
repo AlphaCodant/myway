@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../config.dart';
-import '../l10n/fr.dart';
+import 'config.dart';
+import 'strings.dart';
 
 class ApiException implements Exception {
   final int status;
@@ -53,7 +53,7 @@ class ApiClient {
       try {
         res = await _http.get(uri, headers: _headers).timeout(const Duration(seconds: 15));
       } catch (_) {
-        throw ApiException(0, T.networkError);
+        throw ApiException(0, CoreText.networkError);
       }
       final body = _decode(res);
       servedFromCache = false;
@@ -82,7 +82,7 @@ class ApiClient {
     } on ApiException {
       rethrow;
     } catch (_) {
-      throw ApiException(0, T.networkError);
+      throw ApiException(0, CoreText.networkError);
     }
   }
 
@@ -97,7 +97,7 @@ class ApiClient {
     } on ApiException {
       rethrow;
     } catch (_) {
-      throw ApiException(0, T.networkError);
+      throw ApiException(0, CoreText.networkError);
     }
   }
 
@@ -105,7 +105,7 @@ class ApiClient {
     final text = utf8.decode(res.bodyBytes);
     final data = text.isEmpty ? null : jsonDecode(text);
     if (res.statusCode >= 200 && res.statusCode < 300) return data;
-    var message = T.errorGeneric;
+    var message = CoreText.errorGeneric;
     if (data is Map && data['message'] != null) {
       final m = data['message'];
       message = m is List ? m.join('\n') : '$m';

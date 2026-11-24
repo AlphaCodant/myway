@@ -76,6 +76,11 @@ export class ShopsService {
     return shop;
   }
 
+  async listByAgent(agentId: string) {
+    const rows = await this.shops.find({ where: { createdByAgentId: agentId }, order: { createdAt: 'DESC' } });
+    return rows.map((s) => serializeShop(s));
+  }
+
   async onboard(agentId: string, dto: OnboardMerchantDto) {
     const phone = normalizeCiPhone(dto.ownerPhone);
     let owner = await this.users.findOneBy({ phone });

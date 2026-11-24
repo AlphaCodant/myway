@@ -1,9 +1,9 @@
+import 'package:app_core/app_core.dart';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/models.dart';
 
 class CartLine {
   final Product product;

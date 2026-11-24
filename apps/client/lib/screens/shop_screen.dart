@@ -1,13 +1,9 @@
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
 import '../l10n/fr.dart';
 import '../state/cart_state.dart';
-import '../theme.dart';
-import '../utils/format.dart';
-import '../widgets/common.dart';
 import 'cart_screen.dart';
 
 class ShopScreen extends StatefulWidget {

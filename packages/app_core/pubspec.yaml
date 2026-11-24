@@ -1,0 +1,23 @@
+name: app_core
+description: "Code partagé par les applications client, commerçant et livreur : client API, modèles, thème, composants."
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_ui: ^1.11.1
+  http: ^1.6.0
+  shared_preferences: ^2.5.6
+  socket_io_client: ^3.1.6
+  intl: ^0.20.3
+  provider: ^6.1.5+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

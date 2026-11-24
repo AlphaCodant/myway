@@ -2,15 +2,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
 import '../l10n/fr.dart';
 import '../state/auth_state.dart';
-import '../theme.dart';
-import '../widgets/common.dart';
 
 /// Adresse informelle : point GPS placé sur la carte + repère texte + photo du portail.
 class AddressFormScreen extends StatefulWidget {

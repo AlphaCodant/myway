@@ -262,6 +262,8 @@ describe('Boucle complète commande → livraison → paiement', () => {
       neighborhoodId: nbs.body[0].id, lat: 6.142, lng: -5.958, mobileMoneyNumber: '+2250108080808',
     }).expect(201);
     expect(created.body.status).toBe('PENDING');
+    const mine = await http.get('/api/agent/shops').set(auth('agent')).expect(200);
+    expect(mine.body.map((s: any) => s.id)).toContain(created.body.id);
     await http.post(`/api/merchant/shops/${created.body.id}/products/bulk`).set(auth('agent'))
       .send({ products: [{ name: 'Tomates (tas)', price: 500 }, { name: 'Piment (tas)', price: 200 }] }).expect(201);
     expect((await http.get('/api/shops').query({ q: 'Adjoua' })).body).toHaveLength(0);

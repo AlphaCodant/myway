@@ -91,7 +91,8 @@ class T {
   static const networkError = 'Connexion impossible. Vérifie ton réseau.';
 }
 
-const statusLabels = {
+/// Libellés vus par le client (« vers toi »).
+const clientStatusLabels = {
   'AWAITING_PAYMENT': 'En attente du paiement',
   'PENDING': 'En attente du commerçant',
   'AWAITING_CLIENT': 'Remplacement proposé',
@@ -101,21 +102,4 @@ const statusLabels = {
   'DELIVERED': 'Livrée',
   'CANCELLED': 'Annulée',
   'RETURNED': 'Retournée au commerce',
-};
-
-const categoryLabels = {
-  'ALIMENTATION': 'Alimentation',
-  'RESTAURANT': 'Maquis & restos',
-  'PHARMACIE': 'Pharmacie',
-  'QUINCAILLERIE': 'Quincaillerie',
-  'MARCHE': 'Marché',
-  'SUPERMARCHE': 'Supermarché',
-};
-
-const paymentLabels = {
-  'CASH': 'Espèces à la livraison',
-  'ORANGE_MONEY': 'Orange Money',
-  'MTN_MOMO': 'MTN MoMo',
-  'MOOV_MONEY': 'Moov Money',
-  'WAVE': 'Wave',
 };
