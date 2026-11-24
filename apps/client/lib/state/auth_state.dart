@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api_client.dart';
 import '../api/models.dart';
+import '../config.dart';
 
 class AuthState extends ChangeNotifier {
   AuthState(this.api, this.prefs) {
@@ -41,8 +42,14 @@ class AuthState extends ChangeNotifier {
     name = user['name'];
     if (name != null) await prefs.setString(_kName, name!);
     if (user['neighborhoodId'] != null && _neighborhoodId == null) {
-      _neighborhoodId = user['neighborhoodId'];
-      await prefs.setString(_kNb, _neighborhoodId!);
+      // Quartier déjà choisi sur un autre téléphone : on récupère aussi son nom.
+      try {
+        final rows = await api.get('/cities/${AppConfig.citySlug}/neighborhoods', cache: true) as List;
+        final match = rows.where((r) => r['id'] == user['neighborhoodId']);
+        if (match.isNotEmpty) await setNeighborhood(Neighborhood.fromJson(match.first));
+      } catch (_) {
+        // sans réseau : le client choisira son quartier à l'écran suivant
+      }
     }
     notifyListeners();
   }
