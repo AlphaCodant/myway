@@ -23,13 +23,14 @@ tableau de bord (ventes du jour et de la semaine, commissions, solde), demande d
 Mode « agent terrain » pour l'inscription assistée.
 Le code commun aux apps Flutter est regroupé dans `packages/app_core`.
 
-## Étape 3 — Application livreur (Flutter)
+## Étape 3 — Application livreur (Flutter) ✅
 
 Inscription avec pièces (identité, permis, carte grise), bouton en service / hors service,
 position envoyée toutes les 15 à 30 s, proposition de course avec compte à rebours de 30 s,
 navigation vers le commerce puis le client (repère, photo du portail), appel masqué,
 saisie du code de remise, client injoignable (3 appels + 10 min), portefeuille et plafond d'espèces,
-correction du point GPS. *Routes API existantes : `/courier/*`, `/orders/:id/*`.*
+correction du point GPS, retrait des gains sur Mobile Money. La session OTP, l'appel masqué et la saisie
+du code de remise sont mis en commun dans `packages/app_core`.
 
 ## Étape 4 — Console d'administration (Next.js)
 

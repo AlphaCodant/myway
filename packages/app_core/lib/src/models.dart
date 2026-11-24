@@ -157,6 +157,13 @@ class Order {
   final String? deliveryLandmark;
   final int? distanceMeters;
   final int commission;
+  final int courierEarning;
+  final int clientCallAttempts;
+  final LatLngLite? shopLocation;
+  final String? shopLandmark;
+  final LatLngLite? deliveryLocation;
+  final String? deliveryPhotoUrl;
+  final String? deliveryVoiceNoteUrl;
   final List<OrderItem> items;
   final List<String> timeline;
   final DateTime createdAt;
@@ -181,6 +188,13 @@ class Order {
     this.deliveryLandmark,
     this.distanceMeters,
     this.commission = 0,
+    this.courierEarning = 0,
+    this.clientCallAttempts = 0,
+    this.shopLocation,
+    this.shopLandmark,
+    this.deliveryLocation,
+    this.deliveryPhotoUrl,
+    this.deliveryVoiceNoteUrl,
     required this.items,
     required this.timeline,
     required this.createdAt,
@@ -205,6 +219,13 @@ class Order {
         deliveryLandmark: j['deliveryLandmark'],
         distanceMeters: j['distanceMeters'],
         commission: j['commission'] ?? 0,
+        courierEarning: j['courierEarning'] ?? 0,
+        clientCallAttempts: j['clientCallAttempts'] ?? 0,
+        shopLocation: LatLngLite.fromJson(j['shop']?['location']),
+        shopLandmark: j['shop']?['landmarkText'],
+        deliveryLocation: LatLngLite.fromJson(j['deliveryLocation']),
+        deliveryPhotoUrl: j['deliveryPhotoUrl'],
+        deliveryVoiceNoteUrl: j['deliveryVoiceNoteUrl'],
         courierLocation: LatLngLite.fromJson(j['courier']?['location']),
         items: ((j['items'] as List?) ?? []).map((i) => OrderItem.fromJson(i)).toList(),
         timeline: ((j['timeline'] as List?) ?? []).map((e) => e['type'] as String).toList(),
@@ -213,5 +234,7 @@ class Order {
 
   bool get isActive => !['DELIVERED', 'CANCELLED', 'RETURNED'].contains(status);
   bool get canCancelFree => ['AWAITING_PAYMENT', 'PENDING', 'AWAITING_CLIENT'].contains(status);
+  /// Montant en espèces que le livreur encaisse à la remise.
+  int get cashToCollect => paymentStatus == 'PAID' ? 0 : total;
   bool get canCancel => canCancelFree || ['CONFIRMED', 'READY'].contains(status);
 }

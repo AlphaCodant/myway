@@ -1,8 +1,6 @@
 import 'package:app_core/app_core.dart';
-import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../state/orders_state.dart';
 
@@ -105,54 +103,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   }
 
   Future<void> _handOver() async {
-    final code = TextEditingController();
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Code du client'),
-        content: TextField(
-          key: const Key('handoverCode'),
-          controller: code,
-          autofocus: true,
-          keyboardType: TextInputType.number,
-          maxLength: 4,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 32, letterSpacing: 10, fontWeight: FontWeight.w800),
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Retour')),
-          FilledButton(style: FilledButton.styleFrom(minimumSize: const Size(120, 48)), onPressed: () => Navigator.pop(ctx, true), child: const Text('Valider')),
-        ],
-      ),
-    );
-    if (ok == true) await _run(() => _state.actAsDeliverer(widget.orderId, 'deliver', {'code': code.text}), done: 'Commande remise ✔');
+    final code = await askHandoverCode(context);
+    if (code != null) await _run(() => _state.actAsDeliverer(widget.orderId, 'deliver', {'code': code}), done: 'Commande remise ✔');
   }
 
-  Future<void> _call(String target) async {
-    try {
-      final r = await context.read<ApiClient>().post('/orders/${widget.orderId}/call/$target');
-      if (!mounted) return;
-      await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Appel masqué'),
-          content: Text(r['instructions']),
-          actions: [
-            FilledButton(
-              onPressed: () {
-                launchUrl(Uri(scheme: 'tel', path: r['relayNumber']));
-                Navigator.pop(ctx);
-              },
-              child: const Text('Appeler'),
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
-      if (mounted) showError(context, e);
-    }
-  }
+  Future<void> _call(String target) => startMaskedCall(context, context.read<ApiClient>(), widget.orderId, target);
 
   @override
   Widget build(BuildContext context) {
