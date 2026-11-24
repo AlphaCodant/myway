@@ -479,6 +479,14 @@ export class OrdersService {
     return this.getForUser(user, order.id);
   }
 
+  /** Affectation (ou réaffectation) forcée par l'admin, tracée dans l'historique de la commande. */
+  async adminAssign(admin: AuthUser, id: string, courierId: string) {
+    await this.dispatch.forceAssign(id, courierId);
+    await this.log(id, 'COURIER_FORCED', admin.id, courierId);
+    await this.broadcast(id);
+    return this.getForUser(admin, id);
+  }
+
   async pickUp(user: AuthUser, id: string) {
     const order = await this.asDeliverer(user, id);
     if (order.deliveryMode === DeliveryMode.PICKUP) throw new BadRequestException('Commande à retirer au commerce');

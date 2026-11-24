@@ -298,4 +298,29 @@ describe('Boucle complète commande → livraison → paiement', () => {
     expect(csv.text.split('\n')[0]).toContain('reference;createdAt');
     await http.get('/api/admin/dashboard').set(auth('client')).expect(403);
   });
+
+  it('montre à l’admin les reversements et réclamations avec les noms', async () => {
+    await http.post('/api/merchant/payouts').set(auth('awa')).send({ amount: 500 }).expect(201);
+    const payouts = await http.get('/api/admin/finance/payouts?status=REQUESTED').set(auth('admin')).expect(200);
+    expect(payouts.body.find((p: any) => p.accountType === 'SHOP').accountName).toBe('Boutique Chez Awa');
+
+    const orderId = (await ds.query(`SELECT o.id FROM orders o JOIN users u ON u.id = o."clientId" WHERE u.phone = '+2250706060606' LIMIT 1`))[0].id;
+    await http.post('/api/tickets').set(auth('client')).send({ orderId, subject: 'Produit manquant', message: 'Il manque l’eau' }).expect(201);
+    const tickets = await http.get('/api/admin/tickets').set(auth('admin')).expect(200);
+    const t = tickets.body.find((x: any) => x.subject === 'Produit manquant');
+    expect(t.user.phone).toBe('+2250706060606');
+    expect(t.order.reference).toMatch(/^GAG-/);
+  });
+
+  it('l’admin affecte une commande à un livreur et l’affectation apparaît dans l’historique', async () => {
+    const o = await http.post('/api/orders').set(auth('client'))
+      .send({ shopId, deliveryMode: 'PLATFORM', addressId, paymentMethod: 'CASH', items: [{ productId: products[2].id, quantity: 1 }] })
+      .expect(201);
+    await http.post(`/api/merchant/orders/${o.body.id}/accept`).set(auth('awa')).expect(201);
+    const ibrahimId = (await ds.query(`SELECT id FROM users WHERE phone = '+2250505050505'`))[0].id;
+    const r = await http.post(`/api/admin/orders/${o.body.id}/assign`).set(auth('admin')).send({ courierId: ibrahimId }).expect(201);
+    expect(r.body.courierId).toBe(ibrahimId);
+    expect(r.body.timeline.map((e: any) => e.type)).toContain('COURIER_FORCED');
+    await http.post(`/api/admin/orders/${o.body.id}/cancel`).set(auth('admin')).send({ reason: 'Test', fee: 0 }).expect(201);
+  });
 });

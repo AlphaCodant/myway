@@ -212,8 +212,24 @@ export class AdminService {
   }
 
   // ── Support ──
-  listTickets(status?: TicketStatus) {
-    return this.tickets.find({ where: status ? { status } : {}, order: { createdAt: 'DESC' }, take: 200 });
+  /** Réclamations, avec l'auteur et la référence de la commande pour la console. */
+  async listTickets(status?: TicketStatus) {
+    const rows = await this.tickets.find({ where: status ? { status } : {}, order: { createdAt: 'DESC' }, take: 200 });
+    const [users, orders] = await Promise.all([
+      this.users.findBy({ id: In([...new Set(rows.map((t) => t.userId))]) }),
+      this.orders.findBy({ id: In(rows.map((t) => t.orderId).filter((id): id is string => !!id)) }),
+    ]);
+    const byUser = new Map(users.map((u) => [u.id, u]));
+    const byOrder = new Map(orders.map((o) => [o.id, o]));
+    return rows.map((t) => {
+      const u = byUser.get(t.userId);
+      const o = t.orderId ? byOrder.get(t.orderId) : undefined;
+      return {
+        ...t,
+        user: u ? { id: u.id, name: u.name, phone: u.phone, role: u.role } : null,
+        order: o ? { id: o.id, reference: o.reference, total: o.total, status: o.status } : null,
+      };
+    });
   }
 
   async resolveTicket(adminId: string, id: string, refundAmount?: number, message?: string) {
@@ -259,8 +275,16 @@ export class AdminService {
     return this.couriers.findOneByOrFail({ userId: dto.courierId });
   }
 
-  listPayouts(status?: PayoutStatus) {
-    return this.payouts.find({ where: status ? { status } : {}, order: { createdAt: 'DESC' }, take: 200 });
+  /** Demandes de reversement, avec le nom du commerce ou du livreur. */
+  async listPayouts(status?: PayoutStatus) {
+    const rows = await this.payouts.find({ where: status ? { status } : {}, order: { createdAt: 'DESC' }, take: 200 });
+    const ids = (type: LedgerAccount) => [...new Set(rows.filter((p) => p.accountType === type).map((p) => p.accountId))];
+    const [shops, users] = await Promise.all([
+      this.shops.findBy({ id: In(ids(LedgerAccount.SHOP)) }),
+      this.users.findBy({ id: In(ids(LedgerAccount.COURIER)) }),
+    ]);
+    const names = new Map<string, string | null>([...shops.map((s) => [s.id, s.name] as const), ...users.map((u) => [u.id, u.name ?? u.phone] as const)]);
+    return rows.map((p) => ({ ...p, accountName: names.get(p.accountId) ?? null }));
   }
 
   async payPayout(adminId: string, id: string, providerRef?: string) {

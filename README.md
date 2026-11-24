@@ -12,10 +12,10 @@ Le périmètre et les choix techniques suivent le cahier des charges du projet (
 | [`apps/client`](apps/client) | Application client (Android, puis iOS) | Flutter | ✅ étape 1 |
 | [`apps/merchant`](apps/merchant) | Application commerçant (+ mode agent terrain) | Flutter | ✅ étape 2 |
 | [`apps/courier`](apps/courier) | Application livreur | Flutter | ✅ étape 3 |
-| `apps/admin` | Console d'administration web | Next.js | ⏳ étape 4 |
+| [`apps/admin`](apps/admin) | Console d'administration web | Next.js | ✅ étape 4 |
 | [`packages/app_core`](packages/app_core) | Code partagé des apps Flutter (API, modèles, thème, connexion) | Dart | ✅ |
 
-L'API couvre déjà les besoins des quatre interfaces (commerçant, livreur et admin compris) : les étapes suivantes construisent les écrans, pas la logique métier.
+Les cinq interfaces sont en place. L'étape suivante branche les vrais services (SMS, Mobile Money, appels masqués, hébergement).
 
 Voir la [feuille de route](docs/feuille-de-route.md) pour le découpage complet.
 
@@ -39,6 +39,11 @@ npm run start:dev           # http://localhost:3000/api  —  documentation : ht
 cd ../client
 flutter pub get
 flutter run --dart-define=API_URL=http://10.0.2.2:3000
+
+# 4. Console d'administration (http://localhost:3001, compte 07 00 00 00 00)
+cd ../admin
+npm install
+npm run dev
 ```
 
 ### Comptes de démonstration (créés par `npm run seed`)
@@ -63,6 +68,7 @@ cd apps/api && npm test && npm run test:e2e   # la base livraison_test est cré�
 cd apps/client && flutter analyze && flutter test
 cd apps/merchant && flutter analyze && flutter test
 cd apps/courier && flutter analyze && flutter test
+cd apps/admin && npm test && npm run build
 ```
 
 Le test de bout en bout `apps/api/test/order-flow.e2e-spec.ts` déroule la boucle complète du MVP : commande, alerte temps réel au commerçant, affectation au livreur le plus proche, passage au suivant après 30 s, code de remise, encaissement, commissions, plafond d'espèces, Mobile Money, remplacement de produit, annulation, inscription assistée, tableaux de bord.
@@ -84,3 +90,11 @@ Le test de bout en bout `apps/api/test/order-flow.e2e-spec.ts` déroule la boucl
 | Proposition de course | Aller au commerce | En route | Remise par code | Course terminée | Gains |
 |---|---|---|---|---|---|
 | ![](docs/captures/livreur-04-proposition.jpg) | ![](docs/captures/livreur-06-prete.jpg) | ![](docs/captures/livreur-08-en-route.jpg) | ![](docs/captures/livreur-10-code.jpg) | ![](docs/captures/livreur-11-livree.jpg) | ![](docs/captures/livreur-12-gains.jpg) |
+
+## Aperçu de la console d'administration
+
+| Tableau de bord | Carte en direct | Commande et réaffectation |
+|---|---|---|
+| ![](docs/captures/admin-02-tableau-de-bord.jpg) | ![](docs/captures/admin-03-carte.jpg) | ![](docs/captures/admin-06-affectee.jpg) |
+| **Comptes à valider** | **Espèces des livreurs** | **Réclamation et remboursement** |
+| ![](docs/captures/admin-07-comptes-a-valider.jpg) | ![](docs/captures/admin-09-finances-especes.jpg) | ![](docs/captures/admin-12-reclamation.jpg) |
