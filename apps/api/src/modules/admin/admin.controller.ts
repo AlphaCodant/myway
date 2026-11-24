@@ -2,7 +2,6 @@ import { Body, Controller, Get, Header, Param, Patch, Post, Put, Query } from '@
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AccountStatus, PayoutStatus, Role, TicketStatus } from '../../common/enums';
 import { AuthUser, CurrentUser, Roles } from '../../common/auth/auth.decorators';
-import { DispatchService } from '../orders/dispatch.service';
 import { OrdersService } from '../orders/orders.service';
 import { SettingsService } from '../settings/settings.service';
 import {
@@ -19,7 +18,6 @@ export class AdminController {
   constructor(
     private readonly admin: AdminService,
     private readonly orders: OrdersService,
-    private readonly dispatch: DispatchService,
     private readonly settings: SettingsService,
   ) {}
 
@@ -36,10 +34,8 @@ export class AdminController {
   @Get('orders') listOrders(@Query() q: OrdersQuery) { return this.admin.listOrders(q); }
   @Get('orders/:id') order(@CurrentUser() me: AuthUser, @Param('id') id: string) { return this.orders.getForUser(me, id); }
   @Post('orders/:id/assign')
-  async assign(@CurrentUser() me: AuthUser, @Param('id') id: string, @Body() dto: AssignDto) {
-    await this.dispatch.forceAssign(id, dto.courierId);
-    await this.orders.broadcast(id);
-    return this.orders.getForUser(me, id);
+  assign(@CurrentUser() me: AuthUser, @Param('id') id: string, @Body() dto: AssignDto) {
+    return this.orders.adminAssign(me, id, dto.courierId);
   }
   @Post('orders/:id/cancel')
   cancel(@CurrentUser() me: AuthUser, @Param('id') id: string, @Body() dto: AdminCancelDto) {

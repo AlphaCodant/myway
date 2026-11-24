@@ -32,11 +32,13 @@ saisie du code de remise, client injoignable (3 appels + 10 min), portefeuille e
 correction du point GPS, retrait des gains sur Mobile Money. La session OTP, l'appel masqué et la saisie
 du code de remise sont mis en commun dans `packages/app_core`.
 
-## Étape 4 — Console d'administration (Next.js)
+## Étape 4 — Console d'administration (Next.js) ✅
 
 Validation des commerçants et livreurs, carte en direct, commandes en retard et réaffectation,
 zones, tarifs et commissions, réclamations et remboursements, remises d'espèces, reversements,
-export comptable CSV, tableaux de bord. *Routes API existantes : `/admin/*`.*
+export comptable CSV, tableaux de bord, paramètres métier, équipe (admins et agents terrain).
+Notifications en direct (commande sans livreur, en retard, nouvelle réclamation).
+La console est exportée en fichiers statiques (`apps/admin/out`), hébergeable sur n'importe quel serveur web.
 
 ## Étape 5 — Branchements réels et mise en production
 
