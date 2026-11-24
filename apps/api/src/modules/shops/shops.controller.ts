@@ -98,6 +98,12 @@ export class MerchantShopsController {
 export class AgentController {
   constructor(private readonly shops: ShopsService) {}
 
+  /** Commerces inscrits par cet agent (pour compléter leur catalogue). */
+  @Get('shops')
+  myShops(@CurrentUser() me: AuthUser) {
+    return this.shops.listByAgent(me.id);
+  }
+
   /** Crée le compte du commerçant et sa boutique (en attente de validation par l'admin). */
   @Post('merchants')
   onboard(@CurrentUser() me: AuthUser, @Body() dto: OnboardMerchantDto) {

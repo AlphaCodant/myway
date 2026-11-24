@@ -1,13 +1,9 @@
 import 'package:intl/intl.dart';
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
 import '../l10n/fr.dart';
-import '../theme.dart';
-import '../utils/format.dart';
-import '../widgets/common.dart';
 import 'order_tracking_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
@@ -40,7 +36,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               Card(
                 child: ListTile(
                   title: Text(o.shopName ?? o.reference, style: const TextStyle(fontWeight: FontWeight.w700)),
-                  subtitle: Text('${_date.format(o.createdAt.toLocal())} · ${statusLabels[o.status]}'),
+                  subtitle: Text('${_date.format(o.createdAt.toLocal())} · ${clientStatusLabels[o.status]}'),
                   trailing: Text(fcfa(o.total), style: TextStyle(fontWeight: FontWeight.w800, color: o.isActive ? AppColors.primary : AppColors.ink)),
                   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => OrderTrackingScreen(orderId: o.id))),
                 ),

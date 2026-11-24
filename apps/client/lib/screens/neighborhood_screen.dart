@@ -1,12 +1,9 @@
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
-import '../config.dart';
 import '../l10n/fr.dart';
 import '../state/auth_state.dart';
-import '../widgets/common.dart';
 
 class NeighborhoodScreen extends StatefulWidget {
   const NeighborhoodScreen({super.key, this.popOnSelect = false});

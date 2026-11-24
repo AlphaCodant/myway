@@ -15,13 +15,13 @@ Découpage du MVP en étapes livrables. Chaque étape se termine par une version
 - Mode hors ligne partiel : catalogue et historique en cache, panier conservé, commande mise en file
   et envoyée au retour du réseau (sans doublon).
 
-## Étape 2 — Application commerçant (Flutter)
+## Étape 2 — Application commerçant (Flutter) ✅
 
 Réception des commandes avec alerte sonore forte, accepter / refuser / proposer un remplacement,
 « prête », « je livre moi-même », bouton ouvert/fermé, rupture en un clic, catalogue photo + prix,
 tableau de bord (ventes du jour et de la semaine, commissions, solde), demande de reversement.
 Mode « agent terrain » pour l'inscription assistée.
-*Toutes les routes API existent déjà (`/merchant/*`, `/agent/*`).*
+Le code commun aux apps Flutter est regroupé dans `packages/app_core`.
 
 ## Étape 3 — Application livreur (Flutter)
 

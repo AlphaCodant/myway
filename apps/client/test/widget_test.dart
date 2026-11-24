@@ -5,11 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:livraison_client/api/api_client.dart';
-import 'package:livraison_client/api/models.dart';
+import 'package:app_core/app_core.dart';
 import 'package:livraison_client/main.dart';
 import 'package:livraison_client/state/cart_state.dart';
-import 'package:livraison_client/utils/format.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Shop _shop(String id) => Shop(

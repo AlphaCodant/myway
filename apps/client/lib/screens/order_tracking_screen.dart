@@ -1,16 +1,11 @@
 import 'dart:async';
 
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
 import '../l10n/fr.dart';
-import '../state/realtime.dart';
-import '../theme.dart';
-import '../utils/format.dart';
-import '../widgets/common.dart';
 import 'report_screen.dart';
 
 const _steps = ['PENDING', 'CONFIRMED', 'READY', 'PICKED_UP', 'DELIVERED'];
@@ -130,7 +125,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
               onRefresh: _load,
               child: ListView(padding: const EdgeInsets.all(16), children: [
                 Text(o.shopName ?? '', style: const TextStyle(fontSize: 16, color: AppColors.muted)),
-                Text(statusLabels[o.status] ?? o.status, key: const Key('status'), style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+                Text(clientStatusLabels[o.status] ?? o.status, key: const Key('status'), style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
                 const SizedBox(height: 16),
                 if (o.status == 'AWAITING_PAYMENT') _paymentCard(o),
                 if (o.status == 'AWAITING_CLIENT') _substitutionCard(o),
@@ -192,7 +187,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                 _steps.indexOf(s) <= current ? Icons.check_circle : Icons.radio_button_unchecked,
                 color: _steps.indexOf(s) <= current ? AppColors.secondary : AppColors.muted,
               ),
-              title: Text(statusLabels[s]!, style: TextStyle(fontWeight: _steps.indexOf(s) == current ? FontWeight.w800 : FontWeight.w400)),
+              title: Text(clientStatusLabels[s]!, style: TextStyle(fontWeight: _steps.indexOf(s) == current ? FontWeight.w800 : FontWeight.w400)),
             ),
         ]),
       ),

@@ -1,10 +1,10 @@
+import 'package:app_core/app_core.dart';
 import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/api_client.dart';
 
 /// File d'envoi des commandes passées sans réseau. Chaque commande porte un identifiant
 /// (clientRequestId) : l'API ne la crée qu'une fois, même si l'envoi est rejoué.

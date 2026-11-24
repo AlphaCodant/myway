@@ -1,17 +1,13 @@
 import 'dart:async';
 
+import 'package:app_core/app_core.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../api/api_client.dart';
-import '../api/models.dart';
 import '../l10n/fr.dart';
 import '../state/auth_state.dart';
 import '../state/cart_state.dart';
 import '../state/outbox.dart';
-import '../theme.dart';
-import '../utils/format.dart';
-import '../widgets/common.dart';
 import 'cart_screen.dart';
 import 'neighborhood_screen.dart';
 import 'order_tracking_screen.dart';

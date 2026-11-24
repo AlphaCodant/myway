@@ -1,11 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 
-import '../api/api_client.dart';
-import '../l10n/fr.dart';
-import '../theme.dart';
+import 'api_client.dart';
+import 'strings.dart';
+import 'theme.dart';
 
 void showError(BuildContext context, Object e) {
-  final msg = e is ApiException ? e.message : T.errorGeneric;
+  final msg = e is ApiException ? e.message : CoreText.errorGeneric;
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: AppColors.danger));
 }
 
@@ -26,9 +26,9 @@ class ErrorView extends StatelessWidget {
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           const Icon(Icons.wifi_off, size: 56, color: AppColors.muted),
           const SizedBox(height: 12),
-          Text(error is ApiException ? (error as ApiException).message : T.errorGeneric, textAlign: TextAlign.center),
+          Text(error is ApiException ? (error as ApiException).message : CoreText.errorGeneric, textAlign: TextAlign.center),
           const SizedBox(height: 16),
-          OutlinedButton.icon(onPressed: onRetry, icon: const Icon(Icons.refresh), label: const Text(T.retry)),
+          OutlinedButton.icon(onPressed: onRetry, icon: const Icon(Icons.refresh), label: const Text(CoreText.retry)),
         ]),
       ),
     );
@@ -46,7 +46,7 @@ class OfflineBanner extends StatelessWidget {
       child: const Row(children: [
         Icon(Icons.cloud_off, size: 18),
         SizedBox(width: 8),
-        Expanded(child: Text(T.offline, style: TextStyle(fontSize: 14))),
+        Expanded(child: Text(CoreText.offline, style: TextStyle(fontSize: 14))),
       ]),
     );
   }

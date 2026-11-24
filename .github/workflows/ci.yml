@@ -36,11 +36,14 @@ jobs:
           TEST_DATABASE_URL: postgres://livraison:livraison@localhost:5432/livraison_test
       - run: npm run build
 
-  client:
+  flutter:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: [packages/app_core, apps/client, apps/merchant]
     defaults:
       run:
-        working-directory: apps/client
+        working-directory: ${{ matrix.app }}
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
@@ -48,4 +51,4 @@ jobs:
           channel: stable
       - run: flutter pub get
       - run: flutter analyze
-      - run: flutter test
+      - run: if [ -d test ] && [ -n "$(ls test)" ]; then flutter test; fi
